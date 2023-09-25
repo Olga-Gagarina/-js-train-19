@@ -17,11 +17,11 @@
  */
 
 // Створюємо об'єкт Book
-const Book = {
+let Book = {
     title : "Загальна Книга" ,
      author : "Анонім",         
     pages   :   0 ,  
-    read()  { 
+    read  : function()  { 
         console.log ( `Ви читаєте ${this.title} від ${this.author} .` )
     },
 };
@@ -47,7 +47,7 @@ console.log(Object.getPrototypeOf(Book));
  *  |-------------|----------|
  *  | genre       | "Новела" |
  */
-const Novel = Object.create(Book);
+let Novel = Object.create(Book);
 
 Object.defineProperty(Novel,"genre",{
 get : function(){
@@ -85,16 +85,16 @@ console.log(Object.getPrototypeOf(Novel));
 // Створюємо об'єкт Biography
 
 // Змінемо прототип об'єкта Biography на Novel
-const  Biography = {
+let  Biography = {
  title   :  "Загальна Біографія" ,
  author  :  "Біограф"  ,          
- pages   : 200   
+ pages   : 200 ,  
 };
 Object.setPrototypeOf(Biography,Novel);
 console.log("Завдання: 3 ==============================");
 // Виводимо в консоль Об'єкт: Biography
 console.log(Biography);
-console.log(Object.getPrototypeOf(Biography) === Novel);
+console.log(Novel.isPrototypeOf(Biography) );
 // Перевіримо чи являється Novel прототипом Biography та виведемо в консоль
 
 
@@ -109,15 +109,15 @@ console.log(Object.getPrototypeOf(Biography) === Novel);
 // Створюємо ScienceBook, наслідуємо властивості і функції від об'єкта Book
 
     let ScienceBook = Object.create(Book);
-Object.defineProperty(ScienceBook,"_info",{
-  configurable:false,
-});
 Object.defineProperty(ScienceBook,"info",{
-    set : function(value){
+  configurable : false,
+
+
+    set(value){
         this._info = value;    
     },
-    get: function(){
-        return ` Про книгу  ${this._title} :${this._info}`;
+    get(){
+        return ` Про книгу  ${this._title} : ${this._info}`;
     },
     });
     ScienceBook.title= "Фізика 101" ;        
@@ -161,8 +161,8 @@ console.log(Object.getOwnPropertyDescriptor(ScienceBook, "info"));
 //Створюємо Textbook та наслідуємо властивості з ScienceBook
 let Textbook = Object.create( ScienceBook );
 // Перевизначаємо метод read(), відповідно з дописом вище
-Textbook.read = function(){
-    console.log ( `Ви читаєте підручник ${this.title} від ${this.author}. ${info}` )
+Textbook.read = function() {
+    console.log ( `Ви читаєте підручник ${this.title} від ${this.author}. ${this.info}` );
    
 };
 Textbook.title = "Фізика у Вищій Школі" ;
@@ -175,7 +175,7 @@ Textbook.author = "Дж. Д. Джонс"  ;
 
 console.log("Завдання: 5 ==============================");
 // Викликаємо функцію read об'єкту Textbook
-console.log(Textbook.read());
+Textbook.read();
 // 6. Абстракція: створення об'єкта з загальними властивостями
 /*
  * Об'єкт: Media
@@ -197,9 +197,9 @@ console.log(Textbook.read());
 let Media = {
  format : "Загальний Формат" ,
  length : 0  ,
- play() {
+ play : function() {
     console.log (`Зараз відтворюється медіа у форматі ${this.format} з тривалістю ${this.length }секунд` );
-     }        
+     } ,       
 };
 let Song = Object.create(Media);
 Object.defineProperty(Song," artist ",{
@@ -225,5 +225,5 @@ Object.defineProperty(Song,"  title ",{
 // | title       | "Загальна Пісня"       |
 
 console.log("Завдання: 6 ==============================");
-console.log(Song.play());
+Song.play();
 // Викликаємо функцію play об'єкту Song
